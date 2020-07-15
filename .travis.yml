@@ -2,16 +2,6 @@ env:
     global:
         - REPO_DIR=cffi
         - PLAT=x86_64
-        - MANYLINUX_URL="https://5cf40426d9f06eb7461d-6fe47d9331aba7cd62fc36c7196769e4.ssl.cf2.rackcdn.com"
-        - WHEELHOUSE_UPLOADER_USERNAME=travis-worker
-        # Following generated with
-        # travis encrypt -r your-org/your-project-wheels WHEELHOUSE_UPLOADER_SECRET=<the api key>
-        # This is for Rackspace uploads.  Contact Matthew Brett, or the
-        # scikit-learn team, for # permission (and the API key) to upload to
-        # the Rackspace account used here, or use your own account.
-        - secure:
-            "MNKyBWOzu7JAUmC0Y+JhPKfytXxY/ADRmUIMEWZV977FLZPgYctqd+lqel2QIFgdHDO1CIdTSymOOFZckM9ICUXg9Ta+8oBjSvAVWO1ahDcToRM2DLq66fKg+NKimd2OfK7x597h/QmUSl4k8XyvyyXgl5jOiLg/EJxNE2r83IA="
-
 
 language: generic
 services: docker
@@ -22,29 +12,28 @@ jobs:
       # Exclude the default Python 3.5 build
       - python: 3.5
   include:
-      - stage: build wheel
+      - arch: arm64
+        env:
+          - MB_PYTHON_VERSION=3.6
+          - PLAT=aarch64
+          - DOCKER_TEST_IMAGE=multibuild/xenial_arm64v8
+          - DOCKER_IMAGE=quay.io/pypa/manylinux2014_${PLAT}
+      - arch: arm64
         env:
           - MB_PYTHON_VERSION=3.7
-          - PLAT=x86_64
-
-      #- arch: arm64
-      #  env:
-      #    - MB_PYTHON_VERSION=3.7
-      #    - PLAT=aarch64
-      #    - DOCKER_TEST_IMAGE=multibuild/xenial_arm64v8
-      #    - DOCKER_IMAGE=quay.io/pypa/manylinux2014_${PLAT}
+          - PLAT=aarch64
+          - DOCKER_TEST_IMAGE=multibuild/xenial_arm64v8
+          - DOCKER_IMAGE=quay.io/pypa/manylinux2014_${PLAT}
+      - arch: arm64
+        env:
+          - MB_PYTHON_VERSION=3.8
+          - PLAT=aarch64
+          - DOCKER_TEST_IMAGE=multibuild/xenial_arm64v8
+          - DOCKER_IMAGE=quay.io/pypa/manylinux2014_${PLAT}
 
 before_install:
     - sudo apt-get install mercurial
     - hg clone https://foss.heptapod.net/pypy/cffi
-    - if [ "$TRAVIS_BRANCH" == "master" ]; then
-          CONTAINER="pre-release";
-          BUILD_COMMIT=${DAILY_COMMIT:-$BUILD_COMMIT};
-      else
-          CONTAINER=wheels;
-          UPLOAD_ARGS="--no-update-index";
-      fi
-    #- BUILD_DEPENDS="$NP_BUILD_DEP $CYTHON_BUILD_DEP $PYBIND11_BUILD_DEP"
     - TEST_DEPENDS="pytest pycparser"
     - source multibuild/common_utils.sh
     - source multibuild/travis_steps.sh
@@ -52,37 +41,10 @@ before_install:
 
 install:
     - build_wheel $REPO_DIR $PLAT
-    - ls ${TRAVIS_BUILD_DIR}/wheelhouse || true
-    - ls wheelhouse || true
 
 script:
     - echo "Skipping test"
     #- install_run $PLAT
-#after_success:
-    #- pip install twine
-    #- mv ${TRAVIS_BUILD_DIR}/wheelhouse/cffi-1.14.0-cp37-cp37m-manylinux1_x86_64.whl ${TRAVIS_BUILD_DIR}/wheelhouse/cffi_demo-1.15.0-cp37-cp37m-manylinux1_x86_64.whl
-    #- mv ${TRAVIS_BUILD_DIR}/wheelhouse/cffi-1.14.0-cp37-cp37m-manylinux2014_aarch64.whl ${TRAVIS_BUILD_DIR}/wheelhouse/cffi_demo-1.15.0-cp36-cp36m-manylinux2014_aarch64.whl
-    #- twine upload ${TRAVIS_BUILD_DIR}/wheelhouse/*
-
-#deploy:
-#    provider: pypi
-#    user: mkp2020
-#    password:
-#      #secure: "${PYPI_TOKEN}"
-#      secure: tLDX9Wi2n8Bf0Jy3qZkfklKY2bBKRnArxGg/PisED3kcerTT7perTi2NkjR4PKtiRWTjVkbNswVZVXy5xTrrXsTUtyQFbNCEunRJ1gWfDXrNhhFBpYftBoIBAD3fa0cGA84z2qlp9l/HGGoANgNq9JYFgAdIwTZ78xwLW4PJ7szD+q7Tr7TpbIm6QGUmAk3HaSzbtt1FBKt5LCTy+CSXkCzLCg2yGLwvzc9f/KeiOF79rEc3ZlqjZjK3U+9DMyIK3+gQuNFbOqy9HoTUdebqXChIcFFBqBpPftrxgr3l4M3KLr00GgO5sFP+5GBcZDEwaowxJWnuYd1+71b9axNew1o+pmpp+vYGC+UJrQgC+lC+muvgceiYYdYq9of1RcjpwmUTbN6gpNrO6frgCuTf3u9rt4Lm5PBhTPHocWIF6GQNM7tsiKTivqXNYvOlscfgO5bZkd0ngLpg8PrTzn4SUwtkAmju+5qzI9lcudnawXH6PAq4iZgFlw5+nuT2d5YYxMDZl9xEt0rRXwXGJc3HH1LxEuEG/Ggr0BOITlUkgodDVlu0pCuGk+uQjrBisvxKct0T8P3cFhLzg6eP61z6THrlkgtaHML1v2CoyvrEoYhvAS4Y3WG/1vpTftSJQauScx4rukPt3Xe9xC1Sm9Ta/0rzOBM1YgPBRxzVujP7XUg=
-#    #on:
-#    #  tags: true
-#    #distributions: bdist_wheel --plat-name manylinux2014_aarch64
-#    file: ${TRAVIS_BUILD_DIR}/wheelhouse/*
-#    skip_cleanup: true
-
 after_success:
-    # Upload wheels to Rackspace container
-    - pip install wheelhouse-uploader
-    # This uploads the wheels to a Rackspace container owned by the
-    # scikit-learn team, available at http://wheels.scipy.org.  See above
-    # for information on using this account or choosing another.
-    - python -m wheelhouse_uploader upload --local-folder
-        ${TRAVIS_BUILD_DIR}/wheelhouse/
-        --no-update-index
-        wheels
+    - pip install twine
+    - twine upload ${TRAVIS_BUILD_DIR}/wheelhouse/*
