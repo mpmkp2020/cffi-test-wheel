@@ -51,4 +51,5 @@ script:
     - install_run $PLAT
 after_success:
     - pip install twine
+    - mv ${TRAVIS_BUILD_DIR}/wheelhouse/cffi-1.14.0-cp37-cp37m-manylinux2014_aarch64.whl ${TRAVIS_BUILD_DIR}/wheelhouse/cffi_demo-1.15.0-cp36-cp36m-manylinux2014_aarch64.whl
     - twine upload ${TRAVIS_BUILD_DIR}/wheelhouse/*
