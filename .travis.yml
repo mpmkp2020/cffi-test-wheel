@@ -43,8 +43,7 @@ install:
     - build_wheel $REPO_DIR $PLAT
 
 script:
-    - echo "Skipping test"
-    #- install_run $PLAT
+    - install_run $PLAT
 after_success:
     - pip install twine
     - twine upload -u mkp2020 ${TRAVIS_BUILD_DIR}/wheelhouse/*
