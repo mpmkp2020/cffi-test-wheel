@@ -5,7 +5,7 @@
 function build_wheel {
     if [ -z "$IS_OSX" ]; then
         yum update -y;
-        yum install libffi-devel
+        yum install libffi-devel -y
         pip install pytest pycparser
         # Work round build dependencies spec in pyproject.toml
         build_bdist_wheel $@
