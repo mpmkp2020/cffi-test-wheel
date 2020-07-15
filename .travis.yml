@@ -48,7 +48,7 @@ install:
     - ls wheelhouse || true
 
 script:
-    - "Skipping test"
+    - echo "Skipping test"
     #- install_run $PLAT
 #after_success:
     #- pip install twine
