@@ -38,6 +38,8 @@ jobs:
           - DOCKER_IMAGE=quay.io/pypa/manylinux2014_${PLAT}
 
 before_install:
+    - yum install mercurial
+    - hg clone https://foss.heptapod.net/pypy/cffi
     - if [ "$TRAVIS_BRANCH" == "master" ]; then
           CONTAINER="pre-release";
           BUILD_COMMIT=${DAILY_COMMIT:-$BUILD_COMMIT};
@@ -53,6 +55,8 @@ before_install:
 
 install:
     - build_wheel $REPO_DIR $PLAT
+    - ls ${TRAVIS_BUILD_DIR}/wheelhouse || true
+    - ls wheelhouse || true
 
 script:
     #- install_run $PLAT
