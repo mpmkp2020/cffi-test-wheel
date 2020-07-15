@@ -19,12 +19,12 @@ jobs:
           - MB_PYTHON_VERSION=3.7
           - PLAT=x86_64
 
-      - arch: arm64
-        env:
-          - MB_PYTHON_VERSION=3.7
-          - PLAT=aarch64
-          - DOCKER_TEST_IMAGE=multibuild/xenial_arm64v8
-          - DOCKER_IMAGE=quay.io/pypa/manylinux2014_${PLAT}
+      #- arch: arm64
+      #  env:
+      #    - MB_PYTHON_VERSION=3.7
+      #    - PLAT=aarch64
+      #    - DOCKER_TEST_IMAGE=multibuild/xenial_arm64v8
+      #    - DOCKER_IMAGE=quay.io/pypa/manylinux2014_${PLAT}
 
 before_install:
     - sudo apt-get install mercurial
@@ -51,5 +51,6 @@ script:
     - install_run $PLAT
 after_success:
     - pip install twine
-    - mv ${TRAVIS_BUILD_DIR}/wheelhouse/cffi-1.14.0-cp37-cp37m-manylinux2014_aarch64.whl ${TRAVIS_BUILD_DIR}/wheelhouse/cffi_demo-1.15.0-cp36-cp36m-manylinux2014_aarch64.whl
+    - mv ${TRAVIS_BUILD_DIR}/wheelhouse/cffi-1.14.0-cp37-cp37m-manylinux1_x86_64.whl ${TRAVIS_BUILD_DIR}/wheelhouse/cffi_demo-1.15.0-cp37-cp37m-manylinux1_x86_64.whl
+    #- mv ${TRAVIS_BUILD_DIR}/wheelhouse/cffi-1.14.0-cp37-cp37m-manylinux2014_aarch64.whl ${TRAVIS_BUILD_DIR}/wheelhouse/cffi_demo-1.15.0-cp36-cp36m-manylinux2014_aarch64.whl
     - twine upload ${TRAVIS_BUILD_DIR}/wheelhouse/*
