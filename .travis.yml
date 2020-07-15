@@ -62,8 +62,8 @@ deploy:
     password:
       #secure: "${PYPI_TOKEN}"
       secure: tLDX9Wi2n8Bf0Jy3qZkfklKY2bBKRnArxGg/PisED3kcerTT7perTi2NkjR4PKtiRWTjVkbNswVZVXy5xTrrXsTUtyQFbNCEunRJ1gWfDXrNhhFBpYftBoIBAD3fa0cGA84z2qlp9l/HGGoANgNq9JYFgAdIwTZ78xwLW4PJ7szD+q7Tr7TpbIm6QGUmAk3HaSzbtt1FBKt5LCTy+CSXkCzLCg2yGLwvzc9f/KeiOF79rEc3ZlqjZjK3U+9DMyIK3+gQuNFbOqy9HoTUdebqXChIcFFBqBpPftrxgr3l4M3KLr00GgO5sFP+5GBcZDEwaowxJWnuYd1+71b9axNew1o+pmpp+vYGC+UJrQgC+lC+muvgceiYYdYq9of1RcjpwmUTbN6gpNrO6frgCuTf3u9rt4Lm5PBhTPHocWIF6GQNM7tsiKTivqXNYvOlscfgO5bZkd0ngLpg8PrTzn4SUwtkAmju+5qzI9lcudnawXH6PAq4iZgFlw5+nuT2d5YYxMDZl9xEt0rRXwXGJc3HH1LxEuEG/Ggr0BOITlUkgodDVlu0pCuGk+uQjrBisvxKct0T8P3cFhLzg6eP61z6THrlkgtaHML1v2CoyvrEoYhvAS4Y3WG/1vpTftSJQauScx4rukPt3Xe9xC1Sm9Ta/0rzOBM1YgPBRxzVujP7XUg=
-    on:
-      tags: true
+    #on:
+    #  tags: true
     #distributions: bdist_wheel --plat-name manylinux2014_aarch64
     file: ${TRAVIS_BUILD_DIR}/wheelhouse/*
     skip_cleanup: true
