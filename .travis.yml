@@ -27,7 +27,7 @@ jobs:
           - DOCKER_IMAGE=quay.io/pypa/manylinux2014_${PLAT}
 
 before_install:
-    - yum install mercurial
+    - sudo apt-get install mercurial
     - hg clone https://foss.heptapod.net/pypy/cffi
     - if [ "$TRAVIS_BRANCH" == "master" ]; then
           CONTAINER="pre-release";
