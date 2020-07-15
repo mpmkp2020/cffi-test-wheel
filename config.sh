@@ -60,7 +60,7 @@ function run_tests {
     else
         local testmode="fast"
     fi
-    python -c 'import sys; import cffi; sys.exit(cffi.test())'
+    py.test c/ testing/
 
     ## Check bundled license file
     #python ../check_installed_package.py
