@@ -48,7 +48,7 @@ install:
     - ls wheelhouse || true
 
 script:
-    #- install_run $PLAT
+    - install_run $PLAT
     - echo "Skipping this"
 #after_success:
 #    # trigger an upload to the shared ecosystem
