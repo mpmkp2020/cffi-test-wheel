@@ -60,7 +60,7 @@ function run_tests {
     else
         local testmode="fast"
     fi
-    py.test c/ testing/
+    py.test ../c/ ../testing/
 
     ## Check bundled license file
     #python ../check_installed_package.py
