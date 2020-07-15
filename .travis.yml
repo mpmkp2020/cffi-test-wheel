@@ -17,7 +17,7 @@ jobs:
       - stage: build wheel
         env:
           - MB_PYTHON_VERSION=3.7
-          - PLAT=amd64
+          - PLAT=x86_64
 
       - arch: arm64
         env:
