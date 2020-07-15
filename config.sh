@@ -46,6 +46,12 @@ function build_osx_wheel {
     build_wheel_cmd "build_wheel_with_patch" "$repo_dir"
 }
 
+#function run_tests {
+#    # Runs tests on installed distribution from an empty directory
+#    python --version
+#    python -c 'import sys; import yourpackage; sys.exit(yourpackage.test())'
+#}
+
 function run_tests {
     # Runs tests on installed distribution from an empty directory
     # OSX tests seem to time out pretty often
@@ -54,12 +60,14 @@ function run_tests {
     else
         local testmode="fast"
     fi
-    # Check bundled license file
-    python ../check_installed_package.py
-    # Run tests
-    python ../run_scipy_tests.py $testmode -- -n8 -rfEX
-    # Show BLAS / LAPACK used
-    python -c 'import scipy; scipy.show_config()'
+    python -c 'import sys; import cffi; sys.exit(cffi.test())'
+
+    ## Check bundled license file
+    #python ../check_installed_package.py
+    ## Run tests
+    #python ../run_scipy_tests.py $testmode -- -n8 -rfEX
+    ## Show BLAS / LAPACK used
+    #python -c 'import scipy; scipy.show_config()'
 }
 
 function install_run {
