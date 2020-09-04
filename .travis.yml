@@ -1,6 +1,6 @@
 env:
     global:
-        - REPO_DIR=cffi
+        - REPO_DIR=cffi //test
         - PLAT=x86_64
 
 language: generic
